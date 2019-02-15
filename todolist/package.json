@@ -1,0 +1,28 @@
+{
+  "name": "todolist",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-scripts-ts": "3.1.0",
+    "single-spa-react": "^2.9.0"
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "watch": "webpack-dev-server --port 9001"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.3.1",
+    "@types/jest": "^24.0.1",
+    "@types/node": "^11.9.0",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "@types/single-spa-react": "^2.8.2",
+    "typescript": "^3.3.3"
+  }
+}
