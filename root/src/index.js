@@ -3,6 +3,8 @@ import {
     start
 } from 'single-spa';
 
+import { runScript, loadApp } from './utils';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -30,10 +32,35 @@ registerApplication(
 
 registerApplication(
     'todolist',
-    () => window.System.import('http://localhost:9001/singleSpaEntry.js'),
+    loadApp('reactApp', [
+        'http://localhost:9001/singleSpaEntry.js',
+    ]),
     hashPrefix('todolist'), {
         container: CONTENT_ID
     }
+);
+
+registerApplication(
+    'feedback',
+    loadApp('angularApp', [
+        'http://localhost:4200/runtime.js',
+        'http://localhost:4200/es2015-polyfills.js',
+        'http://localhost:4200/polyfills.js',
+        'http://localhost:4200/styles.js',
+        'http://localhost:4200/vendor.js',
+        'http://localhost:4200/main.js',
+    ]),
+    hashPrefix('feedback'), {
+        container: CONTENT_ID
+    }
+);
+
+registerApplication(
+    'vue',
+    loadApp('vueApp', [
+        'http://localhost:8080//app.js',
+    ]),
+    () => true // to show always
 );
 
 start();

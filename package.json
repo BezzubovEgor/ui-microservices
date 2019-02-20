@@ -1,13 +1,13 @@
 {
   "name": "ui-microservices",
   "version": "0.0.0",
-  "description": "ui-microservices example\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[ ",
+  "description": "ui-microservices example",
   "main": "index.js",
   "scripts": {
     "start": "run-p start:*",
     "start:root": "cd ./root && npm start",
     "start:todo": "cd ./todolist && npm run watch",
-    "insallall": "",
+    "insallall": "run-p insallall:*",
     "insallall:root": "cd ./root && npm install",
     "insallall:todo": "cd ./todolist && npm install"
   },

@@ -13,13 +13,20 @@ const reactLifecycles = (SingleSpaReact as any).default({
   rootComponent: App,
 });
 
+const MICROSERVICE_INIT_OPTIONS : {
+  container?: any,
+} = { };
+
 
 export const bootstrap = [
   reactLifecycles.bootstrap,
 ];
 
 export const mount = [
-  reactLifecycles.mount,
+  (props: any) => {
+    Object.assign(MICROSERVICE_INIT_OPTIONS, props)
+    return reactLifecycles.mount(props);
+  },
 ];
 
 export const unmount = [
@@ -27,13 +34,5 @@ export const unmount = [
 ];
 
 function domElementGetter() {
-  // Make sure there is a div for us to render into
-  let el = document.getElementById('app1');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'app1';
-    document.body.appendChild(el);
-  }
-
-  return el as Element;
+  return document.getElementById(MICROSERVICE_INIT_OPTIONS.container);
 }

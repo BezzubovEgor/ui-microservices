@@ -6,7 +6,7 @@
     "bootstrap": "^4.3.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "react-scripts": "2.1.5",
+    "react-scripts": "^2.1.5",
     "reactstrap": "^7.1.0",
     "single-spa": "^4.0.3",
     "single-spa-react": "^2.9.0",

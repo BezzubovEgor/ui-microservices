@@ -24,6 +24,5 @@ export const unmount = [
 ];
 
 function domElementGetter(...data) {
-    console.log(data);
   return document.getElementById("microservice-content");
 }

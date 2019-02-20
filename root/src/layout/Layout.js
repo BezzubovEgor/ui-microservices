@@ -6,7 +6,10 @@ class App extends Component {
     return (
       <>
         <Header/>
-        <div id="microservice-content"></div>
+        <div className="container">
+          <div id="microservice-content"></div>
+          <div id="vue-service"></div>
+        </div>
       </>
     );
   }

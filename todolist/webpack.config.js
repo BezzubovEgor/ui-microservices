@@ -15,7 +15,7 @@ module.exports = {
         path: path.resolve(__dirname, 'release'),
 
         library: 'reactApp',
-        libraryTarget: 'amd',
+        libraryTarget: 'window',
     },
 
     devServer: {
