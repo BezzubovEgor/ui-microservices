@@ -4,7 +4,6 @@ import { ToDoList } from './components/ToDoList';
 
 class App extends React.Component {
   public render() {
-    console.log(this.props);
     return (
       <div>
         <ToDoList/>

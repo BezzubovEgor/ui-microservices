@@ -9,13 +9,13 @@ export const Header = () => (
                 <NavLink href="#home">Home</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink href="#todolist">ToDo list (React)</NavLink>
+                <NavLink href="#react-service">ToDo list (React)</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink href="#feedback">Angular feedback form</NavLink>
+                <NavLink href="#angular-service">Angular feedback form</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink href="#vue">Only vue service</NavLink>
+                <NavLink href="#vue-service">Only vue service</NavLink>
             </NavItem>
         </Nav>
     </Navbar>

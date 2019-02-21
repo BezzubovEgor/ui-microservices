@@ -6,10 +6,21 @@
   "scripts": {
     "start": "run-p start:*",
     "start:root": "cd ./root && npm start",
-    "start:todo": "cd ./todolist && npm run watch",
-    "insallall": "run-p insallall:*",
-    "insallall:root": "cd ./root && npm install",
-    "insallall:todo": "cd ./todolist && npm install"
+    "start:react-service": "cd ./react-service && npm run watch",
+    "start:angular-service": "cd ./angular-service && npm start",
+    "start:vue-service": "cd ./vue-service && npm run serve",
+
+    "installAll": "run-p insallall:*",
+    "installAll:root": "cd ./root && npm install",
+    "installAll:react-service": "cd ./react-service && npm install",
+    "installAll:angular-service": "cd ./angular-service && npm install",
+    "installAll:vue-service": "cd ./vue-service && npm install",
+
+    "build": "run-p build:*",
+    "build:root": "cd ./root && npm start",
+    "build:react-service": "cd ./react-service && npm run build",
+    "build:angular-service": "cd ./angular-service && npm run build",
+    "build:vue-service": "cd ./vue-service && npm run build"
   },
   "repository": {
     "type": "git",

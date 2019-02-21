@@ -10,9 +10,9 @@ export class AppComponent {
     name: '',
     phone: '',
     feedback: '',
-  }
+  };
 
   submit() {
-    alert('submit');
+    window.dispatchEvent(new CustomEvent('actions', { detail: { type: 'feedback', item: this.feedback } }));
   }
 }

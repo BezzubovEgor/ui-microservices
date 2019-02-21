@@ -12,17 +12,11 @@ const reactLifecycles = singleSpaReact({
   domElementGetter,
 });
 
-export const bootstrap = [
-  reactLifecycles.bootstrap,
-];
+export const bootstrap = [ reactLifecycles.bootstrap ];
 
-export const mount = [
-  reactLifecycles.mount,
-];
+export const mount = [ reactLifecycles.mount ];
 
-export const unmount = [
-  reactLifecycles.unmount,
-];
+export const unmount = [ reactLifecycles.unmount ];
 // Establishes where single-spa will mount our application  
 function domElementGetter() {
   return document.getElementById("root");

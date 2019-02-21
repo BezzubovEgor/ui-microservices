@@ -1,68 +1,177 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# root
 
-## Available Scripts
+## Table of contents
 
-In the project directory, you can run:
+- [root](#root)
+  - [Table of contents](#table-of-contents)
+  - [App structure](#app-structure)
+  - [Get started](#get-started)
+  - [Single-spa root config](#single-spa-root-config)
+  - [Single-spa layout config](#single-spa-layout-config)
+  - [Single-spa home config](#single-spa-home-config)
+  - [Lazy loaded services](#lazy-loaded-services)
 
-### `npm start`
+## App structure
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    - src/
+        - home/
+            - home.app.js    -> home service entry point
+            - Home.jsx       -> main home service component
+        - layout/
+            - layout.app.js  -> layout service entry point
+            - Header.js
+            - Layout.js      -> main layout service component
+        - utils/
+            - loader-utils   -> some utils functions to dynamicly load 
+                                js-modules.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+        - index.js           -> entry poing of application, in
+                                this file we should register our apps
 
-### `npm test`
+    - package.json
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Get started
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+You need to install `single-spa` and `single-spa-react`:
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+``` bash
+    npm install --save single-spa single-spa-react
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Single-spa root config
 
-### `npm run eject`
+Open `index.js` file and change this content to cinfigure all fo the apps, you should use `registerApplication` of `single-spa` to do it. Example:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+``` js
+import { registerApplication, start } from 'single-spa';
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+import { loadApp } from './utils';
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+/**
+ * function to render load & mount apps on specific condition, in this
+ * example on specific hash prefix
+ */
+export function hashPrefix(prefix) {
+    return function (location) {
+        return location.hash.startsWith(`#${prefix}`);
+    }
+}
 
-## Learn More
+// register local subapp to define layout
+registerApplication(
+    'root',
+    () => import('./layout/layout.app'),
+    () => true // to show always
+);
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+// register other local subapp to show home page
+registerApplication(
+    'home',
+    () => import('./home/home.app'),
+    hashPrefix('home'),
+)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+// register `react-service` and dinamicly load it
+registerApplication(
+    'react-service',
+    loadApp('reactApp', [
+        'http://localhost:9001/singleSpaEntry.js',
+    ]),
+    hashPrefix('react-service'),
+);
 
-### Code Splitting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+// register `angular-service` and dinamicly load it
+registerApplication(
+    'angular-service',
+    loadApp('angularApp', [
+        'http://localhost:4200/runtime.js',
+        'http://localhost:4200/es2015-polyfills.js',
+        'http://localhost:4200/polyfills.js',
+        'http://localhost:4200/styles.js',
+        'http://localhost:4200/vendor.js',
+        'http://localhost:4200/main.js',
+    ]),
+    hashPrefix('angular-service'),
+);
 
-### Analyzing the Bundle Size
+// register `vue-service` and dinamicly load it
+registerApplication(
+    'vue-service',
+    loadApp('vueApp', [
+        'http://localhost:8080//app.js',
+    ]),
+    () => true // to show always
+);
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+// start root app
+start();
+```
 
-### Making a Progressive Web App
+## Single-spa layout config
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+In this example we have local service `layout` this service will provide grid and layout to display other apps. You can check `src/layout/` folder.
 
-### Advanced Configuration
+This app has own single-spa service module. You can check `src/layout/layout.app.js`, in this file defined some service handlers `bootstrap`, `mount`, `unmount`:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+``` js
 
-### Deployment
+import React from 'react';
+import ReactDOM from 'react-dom';
+import singleSpaReact from 'single-spa-react';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+import App from './Layout.js';
 
-### `npm run build` fails to minify
+const reactLifecycles = singleSpaReact({
+  React,
+  ReactDOM,
+  rootComponent: App,
+  domElementGetter,
+});
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+export const bootstrap = [ reactLifecycles.bootstrap ];
+
+export const mount = [ reactLifecycles.mount ];
+
+export const unmount = [ reactLifecycles.unmount ];
+// Establishes where single-spa will mount our application
+function domElementGetter() {
+  return document.getElementById("root");
+}
+```
+
+## Single-spa home config
+
+We also can define other local services, for example we defined home service to show home page, you can find it on `src/home/` folder. You can see [previous chapter](!#single-spa-layout-config) to se how you can create local service in your project.
+
+## Lazy loaded services
+
+In this example we have 3 lazy loaded service: `react-service`, `angular-service` and `vue-serve`. To lazy load this services on the our root app and mout it we should define some loader function or use some third-party libs, for example [system.js](!https://github.com/systemjs/systemjs).
+
+In this example we defined our loader function to dinamicly load our services, you can check it in the `src/utils/loader-utils.js`. It uses window modules to register app:
+
+``` js
+export const runScript = async (url) => {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.onload = resolve;
+        script.onerror = reject;
+
+        const firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+};
+
+export const loadApp = (appName, urls) => async () => {
+    for (const url of urls) {
+        await runScript(url);
+    }
+    return window[appName];
+}
+
+```

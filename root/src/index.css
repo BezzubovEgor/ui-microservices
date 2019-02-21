@@ -12,3 +12,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.page-content {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  overflow: auto;
+}
+
+#root {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}

@@ -1,10 +1,15 @@
 <template>
-  <div id="microservice-content">
-    <div class="hello">
-      <h1>Welcome to Your Vue.js App</h1>
-      {{container}}
-      <div v-for="event in events">
-        {{event.type}}
+  <div id="vue-service" class="vue-service">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Vue Logging Service</h5>
+        <ul class="list-group">
+          <li class="list-group-item" v-bind:key="index" v-for="(event, index) in events">
+            <span class="badge badge-primary">{{event.type}}</span>
+            <code>{{JSON.stringify(event.item)}}</code>
+          </li>
+          <li v-if="!events.length" class="list-group-item list-group-item-primary">No events</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -14,30 +19,16 @@
 import { EVENT_BUS } from './EventBus';
 
 export default {
-  name: 'microservice-content',
-  props: {
-    container: String,
-  },
+  name: 'vue-service',
   data: () => ({
-    events: [{type: 'aaaa'}],
+    events: [],
   }),
   created: function () {
-    EVENT_BUS.on('changes', event => this.events.push(event));
+    EVENT_BUS.on('actions', event => this.events.unshift(event));
   }
 }
 
 </script>
 
 <style>
-#microservice-content {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-h3 {
-  margin: 40px 0 0;
-}
 </style>

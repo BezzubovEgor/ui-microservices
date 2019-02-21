@@ -1,10 +1,13 @@
 class EventBus {
+    handlers = new Map();
     on(event, handler) {
-        window.addEventListener(event, handler);
+        this.handlers.set(handler, ({ detail }) => handler(detail));
+        window.addEventListener(event, this.handlers.get(handler));
     }
 
     removeEventListener(event, handler) {
-        window.removeEventListener(event, ({ detail }) => handler(detail));
+        window.removeEventListener(event, this.handlers.get(handler));
+        this.handlers.delete(handler);
     }
 }
 

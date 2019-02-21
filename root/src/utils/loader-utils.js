@@ -11,7 +11,6 @@ export const runScript = async (url) => {
 };
 
 export const loadApp = (appName, urls) => async () => {
-    console.log(appName)
     for (const url of urls) {
         await runScript(url);
     }

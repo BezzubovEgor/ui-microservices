@@ -1,14 +1,10 @@
-import {
-    registerApplication,
-    start
-} from 'single-spa';
+import { registerApplication, start } from 'single-spa';
 
-import { runScript, loadApp } from './utils';
+import { loadApp } from './utils';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-
-export const CONTENT_ID = 'microservice-content';
+import { CONTENT_ID } from './config';
 
 export function hashPrefix(prefix) {
     return function (location) {
@@ -31,17 +27,17 @@ registerApplication(
 )
 
 registerApplication(
-    'todolist',
+    'react-service',
     loadApp('reactApp', [
         'http://localhost:9001/singleSpaEntry.js',
     ]),
-    hashPrefix('todolist'), {
+    hashPrefix('react-service'), {
         container: CONTENT_ID
     }
 );
 
 registerApplication(
-    'feedback',
+    'angular-service',
     loadApp('angularApp', [
         'http://localhost:4200/runtime.js',
         'http://localhost:4200/es2015-polyfills.js',
@@ -50,13 +46,13 @@ registerApplication(
         'http://localhost:4200/vendor.js',
         'http://localhost:4200/main.js',
     ]),
-    hashPrefix('feedback'), {
+    hashPrefix('angular-service'), {
         container: CONTENT_ID
     }
 );
 
 registerApplication(
-    'vue',
+    'vue-service',
     loadApp('vueApp', [
         'http://localhost:8080//app.js',
     ]),
